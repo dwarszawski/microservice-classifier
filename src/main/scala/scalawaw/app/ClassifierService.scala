@@ -4,6 +4,7 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.util.Timeout
 import spray.json.DefaultJsonProtocol
 
+
 import scala.concurrent.duration._
 import scalawaw.app.HandledJsons.{MeetupProfile, MeetupEvent, FBEvent}
 import scalawaw.service.com.detector.console.http.service.HttpService
@@ -25,11 +26,14 @@ trait JsonProtocol extends DefaultJsonProtocol {
   implicit val meetupProfileFormat = jsonFormat16(MeetupProfile)
 
   implicit val requestFormat = jsonFormat6(ClassificationRequest)
+  implicit val responseFormat = jsonFormat2(ClassificationResponse)
 }
 
 case class ClassificationRequest(fbProfile: String, meetupProfile: Option[MeetupProfile],
                                  fbEvents: Option[Seq[FBEvent]], meetupEvents: Option[Seq[MeetupEvent]],
                                  fromDate: Option[Long], toDate: Option[Long])
+
+case class ClassificationResponse(fbEvents: Option[Seq[FBEvent]], meetupEvents: Option[Seq[MeetupEvent]])
 
 trait ClassifierService extends HttpService with JsonProtocol with SprayJsonSupport {
 
@@ -38,7 +42,7 @@ trait ClassifierService extends HttpService with JsonProtocol with SprayJsonSupp
   def routes = path("recommendation") {
     (post & entity(as[ClassificationRequest])) { request =>
       complete {
-        request.toString
+        ClassificationResponse(request.fbEvents, request.meetupEvents)
       }
     }
   } ~ path("test") {
