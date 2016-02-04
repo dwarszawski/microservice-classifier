@@ -5,23 +5,28 @@ import akka.util.Timeout
 import spray.json.DefaultJsonProtocol
 
 import scala.concurrent.duration._
+import scalawaw.app.HandledJsons.FBEvent
 import scalawaw.service.com.detector.console.http.service.HttpService
 
-case class ClassificationRequest(fb_profile: String,
-                                 meetup_profile: String,
-                                 fb_events: String,
-                                 meetup_events: String)
-
 trait JsonProtocol extends DefaultJsonProtocol {
-  implicit val format = jsonFormat4(ClassificationRequest)
+  import HandledJsons._
+
+  implicit val fbLocationFormat = jsonFormat5(FBLocation)
+  implicit val fbPlaceFormat = jsonFormat3(FBPlace)
+  implicit val fbEventFormat = jsonFormat5(FBEvent)
+
+  implicit val requestFormat = jsonFormat3(ClassificationRequest)
 }
+
+case class ClassificationRequest(fbProfile: String, meetupProfile: String,
+                                 fbEvents: Seq[FBEvent])
 
 trait ClassifierService extends HttpService with JsonProtocol with SprayJsonSupport {
 
   implicit val timeout = Timeout(10.seconds)
 
   def routes = path("recommendation") {
-    (get & entity(as[ClassificationRequest])) { request =>
+    (post & entity(as[ClassificationRequest])) { request =>
       complete {
         request.toString
       }
