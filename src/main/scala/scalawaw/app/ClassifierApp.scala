@@ -9,7 +9,7 @@ import com.typesafe.config.ConfigFactory
 
 object ClassifierApp {
 
-  def main(args: Array[String]): Unit = new DashboardService {
+  def main(args: Array[String]): Unit = new ClassifierService {
 
     override implicit val system = ActorSystem("detector-console")
     override implicit val materializer: ActorMaterializer = ActorMaterializer()
