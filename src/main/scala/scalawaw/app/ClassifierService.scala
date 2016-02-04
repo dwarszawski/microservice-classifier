@@ -1,20 +1,29 @@
 package scalawaw.app
 
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.util.Timeout
+import spray.json.DefaultJsonProtocol
 
 import scala.concurrent.duration._
 import scalawaw.service.com.detector.console.http.service.HttpService
 
-trait ClassifierService extends HttpService {
+case class ClassificationRequest(fb_profile: String,
+                                 meetup_profile: String,
+                                 fb_events: String,
+                                 meetup_events: String)
+
+trait JsonProtocol extends DefaultJsonProtocol {
+  implicit val format = jsonFormat4(ClassificationRequest)
+}
+
+trait ClassifierService extends HttpService with JsonProtocol with SprayJsonSupport {
 
   implicit val timeout = Timeout(10.seconds)
 
-  def alarms = path("list") {
-    get {
+  def alarms = path("recommendation") {
+    (get & entity(as[ClassificationRequest])) { request =>
       complete {
-        <div>
-          <h1>Hello World</h1>
-        </div>
+        request.toString
       }
     }
   }
