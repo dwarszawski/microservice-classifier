@@ -24,11 +24,12 @@ trait JsonProtocol extends DefaultJsonProtocol {
   implicit val selfFormat = jsonFormat1(Self)
   implicit val meetupProfileFormat = jsonFormat16(MeetupProfile)
 
-  implicit val requestFormat = jsonFormat4(ClassificationRequest)
+  implicit val requestFormat = jsonFormat6(ClassificationRequest)
 }
 
 case class ClassificationRequest(fbProfile: String, meetupProfile: Option[MeetupProfile],
-                                 fbEvents: Seq[FBEvent], meetupEvents: Seq[MeetupEvent])
+                                 fbEvents: Option[Seq[FBEvent]], meetupEvents: Option[Seq[MeetupEvent]],
+                                 fromDate: Option[Long], toDate: Option[Long])
 
 trait ClassifierService extends HttpService with JsonProtocol with SprayJsonSupport {
 
