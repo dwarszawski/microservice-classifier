@@ -5,7 +5,7 @@ import akka.util.Timeout
 import spray.json.DefaultJsonProtocol
 
 import scala.concurrent.duration._
-import scalawaw.app.HandledJsons.{MeetupEvent, FBEvent}
+import scalawaw.app.HandledJsons.{MeetupProfile, MeetupEvent, FBEvent}
 import scalawaw.service.com.detector.console.http.service.HttpService
 
 trait JsonProtocol extends DefaultJsonProtocol {
@@ -18,10 +18,16 @@ trait JsonProtocol extends DefaultJsonProtocol {
   implicit val meetupGroupFormat = jsonFormat8(MeetupGroup)
   implicit val meetupResultsFormat = jsonFormat17(MeetupEvent)
 
+  implicit val topicsFormat =jsonFormat3(Topics)
+  implicit val photoFormat = jsonFormat4(Photo)
+  implicit val otherFormat = jsonFormat0(OtherServices)
+  implicit val selfFormat = jsonFormat1(Self)
+  implicit val meetupProfileFormat = jsonFormat16(MeetupProfile)
+
   implicit val requestFormat = jsonFormat4(ClassificationRequest)
 }
 
-case class ClassificationRequest(fbProfile: String, meetupProfile: String,
+case class ClassificationRequest(fbProfile: String, meetupProfile: Option[MeetupProfile],
                                  fbEvents: Seq[FBEvent], meetupEvents: Seq[MeetupEvent])
 
 trait ClassifierService extends HttpService with JsonProtocol with SprayJsonSupport {
