@@ -22,5 +22,6 @@ trait ClassifierService extends HttpService {
         }
       }
     }
+}
 
 

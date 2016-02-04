@@ -10,7 +10,7 @@ import _root_.sbt.Path
 import _root_.sbt._
 import sbt.Keys._
 
-name := "anomaly-detector"
+name := "classifier-http"
 
 val scalaV = "2.11.7"
 
@@ -32,10 +32,10 @@ val scalaLoggingV = "3.1.0"
 val logbackV = "1.1.3"
 
 
-lazy val console_http = (project in file("console/console-http")).
+lazy val console_http = (project in file("classifier-http")).
   settings(commonSettings).
   settings(
-    name := "console-http",
+    name := "classifier-http",
     libraryDependencies ++= {
       Seq(
         "com.typesafe.akka"  %% "akka-actor" % akkaV,
