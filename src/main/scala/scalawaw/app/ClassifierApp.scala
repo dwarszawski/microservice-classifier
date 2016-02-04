@@ -18,7 +18,7 @@ object ClassifierApp {
     val config = ConfigFactory.load()
 
     // start the http server:
-    val bindingFuture = Http().bindAndHandle(alarms, config.getString("http.host"), config.getInt("http.port"))
+    val bindingFuture = Http().bindAndHandle(routes, config.getString("http.host"), config.getInt("http.port"))
 
   }
 

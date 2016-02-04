@@ -20,10 +20,16 @@ trait ClassifierService extends HttpService with JsonProtocol with SprayJsonSupp
 
   implicit val timeout = Timeout(10.seconds)
 
-  def alarms = path("recommendation") {
+  def routes = path("recommendation") {
     (get & entity(as[ClassificationRequest])) { request =>
       complete {
         request.toString
+      }
+    }
+  } ~ path("test") {
+    get {
+      complete {
+        "OK"
       }
     }
   }

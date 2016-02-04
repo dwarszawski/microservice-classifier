@@ -1,3 +1,5 @@
+enablePlugins(JavaAppPackaging)
+
 name := "microservice-classifier"
 
 version := "1.0"
@@ -21,7 +23,6 @@ val commonSettings = Seq(
 val akkaV = "2.4.1"
 val akkaStreamV = "2.0-M2"
 val scalaTestV = "2.2.5"
-val sparkV = "1.5.2"
 val scalaLoggingV = "3.1.0"
 val logbackV = "1.1.3"
 
